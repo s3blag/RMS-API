@@ -20,7 +20,11 @@ namespace RMS_API
         {
             services.AddSingleton(c => Configuration);
 
-            services.AddScoped<IStationRepository, StationRepository>();
+            // TODO:
+            // Unit Of Work
+
+            services.AddSingleton<ITrainRepository, TrainRepository>();
+            services.AddSingleton<ICourseRepository, CourseRepository>();
 
             services.AddMvc();
         }

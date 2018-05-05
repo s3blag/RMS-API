@@ -5,10 +5,10 @@ namespace RMS_API.Data
 {
     public abstract class BaseRepository<T>
     {
-        protected ILogger<T> logger;
-        protected string sqlConnectionString;
+        protected readonly ILogger<T> logger;
+        protected readonly string sqlConnectionString;
         private readonly IConfiguration _config;
-
+         
         public BaseRepository(IConfiguration config, ILogger<T> logger)
         {
             _config = config;
