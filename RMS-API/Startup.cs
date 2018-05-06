@@ -20,9 +20,11 @@ namespace RMS_API
         {
             services.AddSingleton(c => Configuration);
 
-            // TODO:
-            // Unit Of Work
+            //  Unit Of Work is here mainly for fun - A controller will use only one repository, so I'm not convinced
+            //  about benefits of using it in this project.
 
+            //  TODO: changle singleton
+            services.AddSingleton<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<ITrainRepository, TrainRepository>();
             services.AddSingleton<ICourseRepository, CourseRepository>();
 

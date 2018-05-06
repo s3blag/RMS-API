@@ -9,12 +9,12 @@ namespace RMS_API.Controllers
     [Route("api/[controller]")]
     public class CoursesController : Controller
     {
-        private readonly ICourseRepository _courseRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<CoursesController> _logger;
 
-        public CoursesController(ICourseRepository courseRepository, ILogger<CoursesController> logger)
+        public CoursesController(IUnitOfWork unitOfWork, ILogger<CoursesController> logger)
         {
-            _courseRepository = courseRepository;
+            _unitOfWork = unitOfWork;
             _logger = logger;
         }
 
@@ -23,7 +23,7 @@ namespace RMS_API.Controllers
         {
             try
             {
-                var (result, count) = _courseRepository.GetAll();
+                var (result, count) = _unitOfWork.CourseRepository.GetAll();
 
                 if (count == 0)
                     return NotFound();

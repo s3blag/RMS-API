@@ -9,12 +9,12 @@ namespace RMS_API.Controllers
     [Route("api/[controller]")]
     public class TrainsController : Controller
     {
-        private readonly ITrainRepository _trainRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<TrainsController> _logger;
 
-        public TrainsController(ITrainRepository trainRepository, ILogger<TrainsController> logger)
+        public TrainsController(IUnitOfWork unitOfWork, ILogger<TrainsController> logger)
         {
-            _trainRepository = trainRepository;
+            _unitOfWork = unitOfWork;
             _logger = logger;
         }
 
@@ -23,7 +23,7 @@ namespace RMS_API.Controllers
         {
             try
             {
-                var (result, count) = _trainRepository.GetAll();
+                var (result, count) = _unitOfWork.TrainRepository.GetAll();
 
                 if (count == 0)
                     return NotFound();
