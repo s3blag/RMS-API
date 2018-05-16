@@ -5,7 +5,6 @@ using RMS_API.Data;
 
 namespace RMS_API.Controllers
 {
-    [Produces("application/json")]
     [Route("api/[controller]")]
     public class TrainsController : Controller
     {
@@ -21,21 +20,24 @@ namespace RMS_API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            try
-            {
-                var (result, count) = _unitOfWork.TrainRepository.GetAll();
+            var (result, count) = _unitOfWork.TrainRepository.GetAll();
 
-                if (count == 0)
-                    return NotFound();
+            if (count == 0)
+                return NotFound();
 
-                return Ok(new { Results = result, Count = count });
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError($"Failed to get trains: {ex}");
-                return BadRequest("Failed to get trains");
-            }
-            
+            return Ok(new { Results = result, Count = count });
+        }
+
+
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var result = _unitOfWork.TrainRepository.GetById(id);
+
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
         }
     }
 }

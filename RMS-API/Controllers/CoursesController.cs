@@ -21,21 +21,12 @@ namespace RMS_API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            try
-            {
-                var (result, count) = _unitOfWork.CourseRepository.GetAll();
+            var (result, count) = _unitOfWork.CourseRepository.GetAll();
 
-                if (count == 0)
-                    return NotFound();
+            if (count == 0)
+                return NotFound();
 
-                return Ok(new { Results = result, Count = count });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Failed to get courses: {ex}");
-                return BadRequest("Failed to get courses");
-            }
-
+            return Ok( new { Results = result, Count = count } );
         }
     }
 }

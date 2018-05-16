@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RMS_API.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -6,6 +7,7 @@ namespace RMS_API.Data
 {
     public interface ITrainRepository
     {
-        (IEnumerable<Object>, int) GetAll();
+        (IEnumerable<TrainDto>, int) GetAll();
+        TrainDto GetById(int id);
     }
 }

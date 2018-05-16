@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using RMS_API.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,7 +14,7 @@ namespace RMS_API.Data
         public CourseRepository(IConfiguration config, ILogger<CourseRepository> logger) : base(config, logger)
         {}
 
-        public (IEnumerable<Object>, int) GetAll()
+        public (IEnumerable<CourseDto>, int) GetAll()
         {
             try
             {
@@ -30,7 +31,7 @@ namespace RMS_API.Data
                 if (count == 0)
                     return (null, 0);
 
-                var result = dataTable.Rows.Cast<DataRow>().Select(row => new
+                var result = dataTable.Rows.Cast<DataRow>().Select(row => new CourseDto
                 {
                     Id = Convert.ToInt32(row[0]),
                     TrainName = row[1] as string,
