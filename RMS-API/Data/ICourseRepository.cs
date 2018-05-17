@@ -5,6 +5,6 @@ namespace RMS_API.Data
 {
     public interface ICourseRepository
     {
-        (IEnumerable<CourseDto>, int) GetAll();
+        IEnumerable<CourseDto> GetAll();
     }
 }

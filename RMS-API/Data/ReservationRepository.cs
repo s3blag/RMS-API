@@ -9,12 +9,12 @@ using System.Linq;
 
 namespace RMS_API.Data
 {
-    public class CourseRepository : BaseRepository<CourseRepository>, ICourseRepository
+    public class ReservationRepository : BaseRepository<ReservationRepository>, IReservationRepository
     {
-        public CourseRepository(IConfiguration config, ILogger<CourseRepository> logger) : base(config, logger)
+        public ReservationRepository(IConfiguration configuration, ILogger<ReservationRepository> logger) : base(configuration, logger)
         {}
 
-        public IEnumerable<CourseDto> GetAll()
+        public IEnumerable<ReservationDto> GetByCustomerId(int customerId)
         {
             try
             {
@@ -22,8 +22,9 @@ namespace RMS_API.Data
                 int count;
 
                 using (var sqlConnection = new SqlConnection(sqlConnectionString))
-                using (var sqlDataAdapter = new SqlDataAdapter($"SELECT * FROM Show_Courses", sqlConnection))
+                using (var sqlDataAdapter = new SqlDataAdapter($"EXEC SHOW_CUSTOMER_RESERVATION @customerID", sqlConnection))
                 {
+                    sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@customerID", customerId);
                     dataTable = new DataTable();
                     count = sqlDataAdapter.Fill(dataTable);
                 }
@@ -31,17 +32,19 @@ namespace RMS_API.Data
                 if (count == 0)
                     return null;
 
-                var result = dataTable.Rows.Cast<DataRow>().Select(row => new CourseDto
+                var result = dataTable.Rows.Cast<DataRow>().Select(row => new ReservationDto
                 {
                     Id = Convert.ToInt32(row[0]),
-                    TrainName = row[1] as string,
-                    StationA = row[2] as string,
-                    StationB = row[3] as string
+                    SeatNumber = Convert.ToInt32(row[1]),
+                    CustomerId = customerId,
+                    CourseId = Convert.ToInt32(row[2]),
+                    StationA = row[3] as string,
+                    StationB = row[4] as string,     
                 });
 
                 return result;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 if (ex is InvalidCastException)
                     logger.LogError($"ID is not an integer: {ex}");
@@ -50,6 +53,5 @@ namespace RMS_API.Data
                 throw;
             }
         }
-
     }
 }

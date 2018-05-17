@@ -1,12 +1,10 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RMS_API.Data;
 
 namespace RMS_API.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/courses")]
     public class CoursesController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -21,12 +19,14 @@ namespace RMS_API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var (result, count) = _unitOfWork.CourseRepository.GetAll();
+            var result = _unitOfWork.CourseRepository.GetAll();
 
-            if (count == 0)
+            if (result == null)
                 return NotFound();
 
-            return Ok( new { Results = result, Count = count } );
+            return Ok(result);
         }
+
+
     }
 }

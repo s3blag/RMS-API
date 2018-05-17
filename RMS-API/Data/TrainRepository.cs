@@ -14,7 +14,7 @@ namespace RMS_API.Data
         public TrainRepository(IConfiguration config, ILogger<TrainRepository> logger) : base(config, logger)
         {}
 
-        public (IEnumerable<TrainDto>, int) GetAll()
+        public IEnumerable<TrainDto> GetAll()
         {
             try
             {
@@ -29,7 +29,7 @@ namespace RMS_API.Data
                 }
 
                 if (count == 0)
-                    return (null, 0);
+                    return null;
 
                 var result = dataTable.Rows.Cast<DataRow>().Select(row => new TrainDto
                 {
@@ -38,7 +38,7 @@ namespace RMS_API.Data
                     Model = row[2] as string
                 });
 
-                return (result, count);
+                return result;
             }
             catch(Exception ex)
             {   
@@ -87,5 +87,40 @@ namespace RMS_API.Data
                 throw;
             }
         }
+
+        public int Add(TrainForCreationDto train)
+        {
+            try
+            {
+                int newId = -1;
+
+                using (var sqlConnection = new SqlConnection(sqlConnectionString))
+                using (var sqlCommand = new SqlCommand($"EXEC ADD_TRAIN @name, @model", sqlConnection))
+                {
+                    var returnParameter = sqlCommand.Parameters.Add("@result", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.Output;
+                    
+                    sqlCommand.Parameters.AddWithValue("@name", train.Name);
+                    sqlCommand.Parameters.AddWithValue("@model", train.Model);
+                    sqlConnection.Open();
+                    var result = sqlCommand.ExecuteScalar();
+
+                    newId = Convert.ToInt32(result);
+
+                    if (sqlConnection.State == ConnectionState.Open)
+                        sqlConnection.Close();
+
+                }
+
+                return newId;
+
+            }
+            catch(Exception ex)
+            {
+                logger.LogInformation($"AddTrain DB Connection Error: {ex}");
+                return -1;
+            }
+        }
     }
+    
 }

@@ -7,17 +7,19 @@ namespace RMS_API.Data
 {
     public class UnitOfWork : IUnitOfWork
     {
-        //  Unit Of Work is here mainly for fun - A controller will use only one repository, so I'm not convinced
-        //  about benefits of using it in this project.
+        //  Unit Of Work is here mainly for fun
 
         public ICourseRepository CourseRepository { get; }
         public ITrainRepository TrainRepository { get; }
+        public IReservationRepository ReservationRepository { get; }
 
         public UnitOfWork(ICourseRepository courseRepository, 
-                          ITrainRepository trainRepository)
+                          ITrainRepository trainRepository,
+                          IReservationRepository reservationRepository)
         {
             CourseRepository = courseRepository;
             TrainRepository = trainRepository;
+            ReservationRepository = reservationRepository;
         }
 
     }

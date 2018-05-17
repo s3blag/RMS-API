@@ -1,7 +1,8 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RMS_API.Data;
+using RMS_API.Data.Models;
+using System;
 
 namespace RMS_API.Controllers
 {
@@ -18,19 +19,19 @@ namespace RMS_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetTrains()
         {
-            var (result, count) = _unitOfWork.TrainRepository.GetAll();
+            var result = _unitOfWork.TrainRepository.GetAll();
 
-            if (count == 0)
+            if (result == null)
                 return NotFound();
 
-            return Ok(new { Results = result, Count = count });
+            return Ok(result);
         }
 
 
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        [HttpGet("{id}", Name = "GetTrain")]
+        public IActionResult GetTrain(int id)
         {
             var result = _unitOfWork.TrainRepository.GetById(id);
 
@@ -38,6 +39,32 @@ namespace RMS_API.Controllers
                 return NotFound();
 
             return Ok(result);
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] TrainForCreationDto train)
+        {
+            if (train == null)
+            {
+                return BadRequest();
+            }
+
+            var newId = _unitOfWork.TrainRepository.Add(train);
+
+            if(newId < 0)
+            {
+                throw new Exception("Creating a train failed on save.");
+            }
+
+            //TODO: Add AutoMapper
+            var trainToReturn = new TrainDto
+            {
+                Model = train.Model,
+                Name = train.Name,
+                Id = newId
+            };
+
+            return CreatedAtRoute("GetTrain", new { id = trainToReturn.Id }, trainToReturn);
         }
     }
 }

@@ -4,5 +4,6 @@
     {
         ICourseRepository CourseRepository { get; }
         ITrainRepository TrainRepository { get; }
+        IReservationRepository ReservationRepository { get; }
     }
 }

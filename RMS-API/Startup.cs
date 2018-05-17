@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RMS_API.Data;
@@ -21,14 +22,18 @@ namespace RMS_API
         {
             services.AddSingleton(c => Configuration);
 
-            //  Unit Of Work is here mainly for fun - A controller will use only one repository, so I'm not convinced
-            //  about benefits of using it in this project.
+            //  Unit Of Work is here mainly for fun 
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITrainRepository, TrainRepository>();
             services.AddScoped<ICourseRepository, CourseRepository>();
+            services.AddScoped<IReservationRepository, ReservationRepository>();
 
-            services.AddMvc();
+            services.AddMvc(setupAction =>
+            {
+                setupAction.ReturnHttpNotAcceptable = true;
+                setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
