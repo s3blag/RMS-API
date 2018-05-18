@@ -29,7 +29,6 @@ namespace RMS_API.Controllers
             return Ok(result);
         }
 
-
         [HttpGet("{id}", Name = "GetTrain")]
         public IActionResult GetTrain(int id)
         {

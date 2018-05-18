@@ -70,7 +70,7 @@ namespace RMS_API.Data.Repositories
                     sqlCommand.Parameters.AddWithValue("@courseId", visit.CourseId);
                     sqlCommand.Parameters.AddWithValue("@visitOrder", visit.VisitOrder);
                     //TODO
-                    sqlCommand.Parameters.AddWithValue("@available_seats", 50);
+                    sqlCommand.Parameters.AddWithValue("@availableSeats", 50);
                     sqlCommand.Parameters.AddWithValue("@date", visit.Date);
 
                     sqlConnection.Open();
