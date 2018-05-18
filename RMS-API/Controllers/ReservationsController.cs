@@ -17,7 +17,7 @@ namespace RMS_API.Controllers
         }
 
         [HttpGet()]
-        public IActionResult GetReservationForCustomer(int customerId)
+        public IActionResult GetReservationsForCustomer(int customerId)
         {
             var result = _unitOfWork.ReservationRepository.GetByCustomerId(customerId);
 

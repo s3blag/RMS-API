@@ -28,6 +28,7 @@ namespace RMS_API
             services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddScoped<IVisitRepository, VisitRepository>();
+            services.AddScoped<IStationRepository, StationRepository>();
 
             services.AddMvc(setupAction =>
             {

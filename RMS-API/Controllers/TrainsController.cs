@@ -42,7 +42,7 @@ namespace RMS_API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] TrainForCreationDto train)
+        public IActionResult CreateTrain([FromBody] TrainForCreationDto train)
         {
             if (train == null)
             {

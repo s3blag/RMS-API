@@ -52,7 +52,7 @@ namespace RMS_API.Controllers
         }
 
         [HttpPost("{id}/visits")]
-        public IActionResult Create([FromBody] VisitForCreationDto visit, int id)
+        public IActionResult CreateVisit([FromBody] VisitForCreationDto visit, int id)
         {
 
             if (visit == null)
@@ -70,7 +70,6 @@ namespace RMS_API.Controllers
                 throw new Exception("Creating a visit failed on save.");
             }
 
-            //TODO: Add AutoMapper
             var visitToReturn = new VisitDto
             {
                 Id = newId,
@@ -84,5 +83,29 @@ namespace RMS_API.Controllers
             return CreatedAtRoute("GetVisitsForCourse", new { id = visitToReturn.Id }, visitToReturn);
         }
 
+        [HttpPost()]
+        public IActionResult CreateCourse([FromBody] CourseForCreationDto course)
+        {
+
+            if (course == null)
+            {
+                return BadRequest();
+            }
+
+            var newId = _unitOfWork.CourseRepository.Add(course);
+
+            if (newId < 0)
+            {
+                throw new Exception("Creating a course failed on save.");
+            }
+
+            var courseToReturn = new
+            {
+                Id = newId,
+                TrainId = course.TrainId
+            };
+
+            return CreatedAtRoute("GetVisitsForCourse", new { id = courseToReturn.Id }, courseToReturn);
+        }
     }
 }

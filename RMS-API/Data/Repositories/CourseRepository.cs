@@ -97,5 +97,38 @@ namespace RMS_API.Data.Repositories
                 throw;
             }
         }
+
+        public int Add(CourseForCreationDto course)
+        {
+            try
+            {
+                int newId = -1;
+
+                using (var sqlConnection = new SqlConnection(sqlConnectionString))
+                using (var sqlCommand = new SqlCommand($"EXEC ADD_COURSE @trainId", sqlConnection))
+                {
+                    var returnParameter = sqlCommand.Parameters.Add("@result", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.Output;
+
+                    sqlCommand.Parameters.AddWithValue("@trainId", course.TrainId);
+                    sqlConnection.Open();
+                    var result = sqlCommand.ExecuteScalar();
+
+                    newId = Convert.ToInt32(result);
+
+                    if (sqlConnection.State == ConnectionState.Open)
+                        sqlConnection.Close();
+
+                }
+
+                return newId;
+
+            }
+            catch (Exception ex)
+            {
+                logger.LogInformation($"AddCourse DB Connection Error: {ex}");
+                return -1;
+            }
+        }
     }
 }

@@ -6,5 +6,6 @@
         ITrainRepository TrainRepository { get; }
         IReservationRepository ReservationRepository { get; }
         IVisitRepository VisitRepository { get; }
+        IStationRepository StationRepository { get; }
     }
 }

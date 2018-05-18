@@ -7,5 +7,7 @@ namespace RMS_API.Data
     {
         IEnumerable<CourseDto> GetAll();
         IEnumerable<SubCourseDto> GetFromTo(string firstStation, string finalStation);
+
+        int Add(CourseForCreationDto course);
     }
 }
