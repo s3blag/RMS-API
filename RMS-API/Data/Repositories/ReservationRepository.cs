@@ -7,7 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 
-namespace RMS_API.Data
+namespace RMS_API.Data.Repositories
 {
     public class ReservationRepository : BaseRepository<ReservationRepository>, IReservationRepository
     {
@@ -40,7 +40,7 @@ namespace RMS_API.Data
                     CourseId = Convert.ToInt32(row[2]),
                     StationA = row[3] as string,
                     StationB = row[4] as string,     
-                });
+                }).ToList();
 
                 return result;
             }

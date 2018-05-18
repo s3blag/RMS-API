@@ -7,7 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 
-namespace RMS_API.Data
+namespace RMS_API.Data.Repositories
 {
     public class TrainRepository : BaseRepository<TrainRepository>, ITrainRepository
     {
@@ -36,7 +36,7 @@ namespace RMS_API.Data
                     Id = Convert.ToInt32(row[0]),
                     Name = row[1] as string,
                     Model = row[2] as string
-                });
+                }).ToList();
 
                 return result;
             }

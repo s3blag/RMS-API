@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RMS_API.Data.Repositories;
 using RMS_API.Data;
 
 namespace RMS_API
@@ -22,16 +23,16 @@ namespace RMS_API
         {
             services.AddSingleton(c => Configuration);
 
-            //  Unit Of Work is here mainly for fun 
-
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITrainRepository, TrainRepository>();
             services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddScoped<IReservationRepository, ReservationRepository>();
+            services.AddScoped<IVisitRepository, VisitRepository>();
 
             services.AddMvc(setupAction =>
             {
                 setupAction.ReturnHttpNotAcceptable = true;
+                // not working with anonymous classes
                 setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
             });
         }

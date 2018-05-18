@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace RMS_API.Data
+namespace RMS_API.Data.Repositories
 {
     public abstract class BaseRepository<T>
     {

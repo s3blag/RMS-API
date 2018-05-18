@@ -6,9 +6,9 @@
 
         public string TrainName { get; set; }
 
-        public string StationA { get; set; }
+        public string FirstStation { get; set; }
 
-        public string StationB { get; set; }
+        public string FinalStation { get; set; }
 
     }
 }
