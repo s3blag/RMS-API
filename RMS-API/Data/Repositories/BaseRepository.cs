@@ -1,8 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Data;
-using System.Data.SqlClient;
 
 namespace RMS_API.Data.Repositories
 {
@@ -18,7 +15,5 @@ namespace RMS_API.Data.Repositories
             this.logger = logger;
             sqlConnectionString = _config.GetConnectionString("RMSConnectionString");
         }
-
-        
     }
 }

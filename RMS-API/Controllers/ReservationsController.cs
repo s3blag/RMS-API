@@ -21,42 +21,48 @@ namespace RMS_API.Controllers
         [HttpGet(Name = "GetReservationForCustomer")]
         public IActionResult GetReservationsForCustomer(int customerId)
         {
-            var result = _unitOfWork.ReservationRepository.GetByCustomerId(customerId);
+            if (customerId >= 0)
+            {
+                var result = _unitOfWork.ReservationRepository.GetByCustomerId(customerId);
 
-            if (result == null)
-                return NotFound();
+                if (result == null)
+                    return NotFound();
 
-            return Ok(result);
+                return Ok(result);
+            }
+            else
+                return BadRequest();
         }
 
         [HttpPost]
         public IActionResult AddReservation([FromBody]ReservationForCreationDto reservation)
         {
-            if (reservation == null)
-            {
-                return NotFound();
-            }
-
             var customerId = Convert.ToInt32(RouteData.Values["customerId"]);
 
-            var result = _unitOfWork.ReservationRepository.Add(reservation, customerId);
-
-            if (result.Item1 < 0 || result.Item2 < 0)
+            if (ModelState.IsValid && customerId >= 0)
             {
-                throw new Exception("Creating a reservation failed on save.");
+                var result = _unitOfWork.ReservationRepository.Add(reservation, customerId);
+
+                if (result.Item1 < 0 || result.Item2 < 0)
+                {
+                    throw new Exception("Creating a reservation failed on save.");
+                }
+
+                var reservationToReturn = new ReservationDto
+                {
+                    Id = result.Item1,
+                    SeatNumber = result.Item2,
+                    CustomerId = customerId,
+                    CourseId = reservation.CourseId,
+                    FirstStation = reservation.FirstStation,
+                    LastStation = reservation.LastStation
+                };
+
+                return CreatedAtRoute("GetReservationForCustomer", new { id = reservationToReturn.CustomerId }, reservationToReturn);
             }
-
-            var reservationToReturn = new ReservationDto
-            {
-                Id = result.Item1,
-                SeatNumber = result.Item2,
-                CustomerId = customerId,
-                CourseId = reservation.CourseId,
-                FirstStation = reservation.FirstStation,
-                LastStation = reservation.LastStation
-            };
-
-            return CreatedAtRoute("GetReservationForCustomer", new { id = reservationToReturn.CustomerId }, reservationToReturn);
+            else
+                return BadRequest();
+            
         }
     }
 }

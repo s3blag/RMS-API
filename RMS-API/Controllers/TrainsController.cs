@@ -32,38 +32,47 @@ namespace RMS_API.Controllers
         [HttpGet("{id}", Name = "GetTrain")]
         public IActionResult GetTrain(int id)
         {
-            var result = _unitOfWork.TrainRepository.GetById(id);
+            if (id >= 0)
+            {
+                var result = _unitOfWork.TrainRepository.GetById(id);
 
-            if (result == null)
-                return NotFound();
+                if (result == null)
+                    return NotFound();
 
-            return Ok(result);
+                return Ok(result);
+
+            }
+            else
+                return BadRequest();
         }
 
         [HttpPost]
         public IActionResult CreateTrain([FromBody] TrainForCreationDto train)
-        {
-            if (train == null)
+        { 
+            if (ModelState.IsValid)
             {
+                var newId = _unitOfWork.TrainRepository.Add(train);
+
+                if (newId < 0)
+                {
+                    throw new Exception("Creating a train failed on save.");
+                }
+
+                //TODO: Add AutoMapper
+                var trainToReturn = new TrainDto
+                {
+                    Model = train.Model,
+                    Name = train.Name,
+                    Id = newId
+                };
+
+                return CreatedAtRoute("GetTrain", new { id = trainToReturn.Id }, trainToReturn);
+            }
+            else           
                 return BadRequest();
-            }
+           
 
-            var newId = _unitOfWork.TrainRepository.Add(train);
-
-            if(newId < 0)
-            {
-                throw new Exception("Creating a train failed on save.");
-            }
-
-            //TODO: Add AutoMapper
-            var trainToReturn = new TrainDto
-            {
-                Model = train.Model,
-                Name = train.Name,
-                Id = newId
-            };
-
-            return CreatedAtRoute("GetTrain", new { id = trainToReturn.Id }, trainToReturn);
+            
         }
     }
 }

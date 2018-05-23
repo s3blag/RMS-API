@@ -12,7 +12,7 @@ namespace RMS_API.Data.Repositories
     public class TrainRepository : BaseRepository<TrainRepository>, ITrainRepository
     {
         public TrainRepository(IConfiguration config, ILogger<TrainRepository> logger) : base(config, logger)
-        {}
+        { }
 
         public IEnumerable<TrainDto> GetAll()
         {

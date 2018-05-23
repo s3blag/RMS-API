@@ -12,7 +12,7 @@ namespace RMS_API.Data.Repositories
     public class CourseRepository : BaseRepository<CourseRepository>, ICourseRepository
     {
         public CourseRepository(IConfiguration config, ILogger<CourseRepository> logger) : base(config, logger)
-        {}
+        { }
 
         public IEnumerable<CourseDto> GetAll()
         {

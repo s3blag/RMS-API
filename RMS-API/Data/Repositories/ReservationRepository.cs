@@ -12,7 +12,7 @@ namespace RMS_API.Data.Repositories
     public class ReservationRepository : BaseRepository<ReservationRepository>, IReservationRepository
     {
         public ReservationRepository(IConfiguration configuration, ILogger<ReservationRepository> logger) : base(configuration, logger)
-        {}
+        { }
 
         public IEnumerable<ReservationDto> GetByCustomerId(int customerId)
         {
