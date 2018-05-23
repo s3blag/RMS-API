@@ -40,7 +40,7 @@ namespace RMS_API.Data.Repositories
                     StationName = row[3] as string,
                     VisitOrder = Convert.ToInt32(row[4]),
                     Date = Convert.ToDateTime(row[5])
-                }).ToList();
+                });
 
                 return result;
             }
@@ -78,8 +78,6 @@ namespace RMS_API.Data.Repositories
 
                     newId = Convert.ToInt32(result);
 
-                    if (sqlConnection.State == ConnectionState.Open)
-                        sqlConnection.Close();
                 }
 
                 return newId;

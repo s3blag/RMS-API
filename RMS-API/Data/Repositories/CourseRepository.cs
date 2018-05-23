@@ -37,7 +37,7 @@ namespace RMS_API.Data.Repositories
                     TrainName = row[1] as string,
                     FirstStation = row[2] as string,
                     FinalStation = row[3] as string
-                }).ToList();
+                });
 
                 return result;
             }
@@ -84,7 +84,7 @@ namespace RMS_API.Data.Repositories
                     FinalStation = row[3] as string,
                     DepartureDate = Convert.ToDateTime(row[4]),
                     ArrivalDate = Convert.ToDateTime(row[5])
-                }).ToList();
+                });
 
                 return result;
             }
@@ -115,10 +115,6 @@ namespace RMS_API.Data.Repositories
                     var result = sqlCommand.ExecuteScalar();
 
                     newId = Convert.ToInt32(result);
-
-                    if (sqlConnection.State == ConnectionState.Open)
-                        sqlConnection.Close();
-
                 }
 
                 return newId;

@@ -40,7 +40,7 @@ namespace RMS_API.Data.Repositories
                     CourseId = Convert.ToInt32(row[2]),
                     FirstStation = row[3] as string,
                     LastStation = row[4] as string,     
-                }).ToList();
+                });
 
                 return result;
             }
@@ -82,9 +82,6 @@ namespace RMS_API.Data.Repositories
 
                     newId = Convert.ToInt32(sqlCommand.Parameters["@reservationId"].Value);
                     seatNumber = Convert.ToInt32(sqlCommand.Parameters["@seatNumber"].Value);
-
-                    if (sqlConnection.State == ConnectionState.Open)
-                        sqlConnection.Close();
                 }
 
                 return (newId, seatNumber);

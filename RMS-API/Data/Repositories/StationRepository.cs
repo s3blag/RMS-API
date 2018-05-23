@@ -35,7 +35,7 @@ namespace RMS_API.Data.Repositories
                 {
                     Id = Convert.ToInt32(row[0]),
                     Name = row[1] as string
-                }).ToList();
+                });
 
                 return result;
             }

@@ -36,7 +36,7 @@ namespace RMS_API.Data.Repositories
                     Id = Convert.ToInt32(row[0]),
                     Name = row[1] as string,
                     Model = row[2] as string
-                }).ToList();
+                });
 
                 return result;
             }
@@ -106,9 +106,6 @@ namespace RMS_API.Data.Repositories
                     var result = sqlCommand.ExecuteScalar();
 
                     newId = Convert.ToInt32(result);
-
-                    if (sqlConnection.State == ConnectionState.Open)
-                        sqlConnection.Close();
 
                 }
 
